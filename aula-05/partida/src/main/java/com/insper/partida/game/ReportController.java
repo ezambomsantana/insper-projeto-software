@@ -19,7 +19,9 @@ public class ReportController {
     private GameRepository gameRepository;
 
     @Autowired
-    private TeamRepository teamRepository;
+    private Cache cache;
+
+
 
     @GetMapping("/numbers")
     public HashMap<Integer,Integer> getInts(@RequestParam("amount") Integer amount) {
@@ -31,12 +33,8 @@ public class ReportController {
         }
 
         HashMap<Integer, Integer> count = new HashMap<>();
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0 ; j < nums.size(); j++) {
-                if (nums.get(j) == i) {
-                    count.merge(i, 1, Integer::sum);
-                }
-            }
+        for (int i = 0 ; i < nums.size(); i++) {
+            count.merge(nums.get(i), 1, Integer::sum);
         }
         return count;
     }
@@ -44,17 +42,13 @@ public class ReportController {
     @GetMapping("/tenGamesHomeByTeam")
     public List<GameReturnDTO> getTenGamesHomeByTeam(@RequestParam(name = "team") String team) {
 
-        Team teamDB = teamRepository.findByIdentifier(team);
+        Team teamDB = cache.getTeam(team);
         if (teamDB == null) {
             throw new RuntimeException("Time não encontrado");
         }
 
         List<Game> games = gameRepository
-                .findAll()
-                .stream()
-                .filter(g -> g.getHome().equals(team) || g.getAway().equals(team))
-                .limit(10)
-                .toList();
+                .findByHomeOrAway(team, team);
 
         return games.stream().map(g -> GameReturnDTO.covert(g)).toList();
 
@@ -64,7 +58,7 @@ public class ReportController {
     public List<GameReturnDTO> getAllTeams(@RequestParam(name = "team") List<String> teams) {
 
         for (String team : teams) {
-            Team teamDB = teamRepository.findByIdentifier(team);
+            Team teamDB = cache.getTeam(team);
             if (teamDB == null) {
                 throw new RuntimeException("Time não encontrado");
             }
@@ -91,7 +85,7 @@ public class ReportController {
     public HashMap<String, Integer>  getPointsByTeam(@RequestParam(name = "team") List<String> teams) {
 
         for (String team : teams) {
-            Team teamDB = teamRepository.findByIdentifier(team);
+            Team teamDB = cache.getTeam(team);
             if (teamDB == null) {
                 throw new RuntimeException("Time não encontrado");
             }
