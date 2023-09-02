@@ -1,0 +1,11 @@
+
+_
+java:S1612""BReplace this lambda with method reference 'GameReturnDTO::covert'.(Ó½°™8ÊÕ°»¥1
+_
+java:S1612&"BReplace this lambda with method reference 'GameReturnDTO::covert'.(Ó½°™8ÎÕ°»¥1
+_
+java:S1612)"BReplace this lambda with method reference 'GameReturnDTO::covert'.(Ó½°™8ÐÕ°»¥1
+Z
+java:S1854X"8Remove this useless assignment to local variable "team".(Œ…ø¦úÿÿÿÿ8íÕ°»¥1
+K
+java:S1481X")Remove this unused "team" local variable.(Œ…ø¦úÿÿÿÿ8óÕ°»¥1

@@ -1,0 +1,11 @@
+
+b	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Â¡ÍÃ8İÈ°»¥1
+b	java:S112."FDefine and throw a dedicated exception instead of using a generic one.(Â¡ÍÃ8äÈ°»¥1
+A
+java:S1168 "+Return an empty collection instead of null.(¥¹ï
+B
+java:S1172#",Remove this unused method parameter "betId".(²Û—
+f
+java:S1128"DRemove this unused import 'org.springframework.http.ResponseEntity'.(¶¯ø¦úÿÿÿÿ8ŞÊ°»¥1
+j
+java:S1128"HRemove this unused import 'org.springframework.web.client.RestTemplate'.(Îö¼Şûÿÿÿÿ8àÊ°»¥1
