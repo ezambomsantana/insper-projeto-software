@@ -118,10 +118,10 @@ public class GameService {
 
         for (int i = 0; i < 1000; i++) {
 
-            Integer team1 = new Random().nextInt(19);
-            Integer team2 = new Random().nextInt(19);
+            Integer team1 = new Random().nextInt(20);
+            Integer team2 = new Random().nextInt(20);
             while  (team1 == team2) {
-                team2 = new Random().nextInt(19);
+                team2 = new Random().nextInt(20);
             }
 
             Game game = new Game();
@@ -129,9 +129,10 @@ public class GameService {
             game.setAway(teams[team2]);
             game.setScoreHome(new Random().nextInt(4));
             game.setScoreAway(new Random().nextInt(4));
-            game.setStadium(teams[0]);
+            game.setStadium(teams[team1]);
             game.setAttendance(new Random().nextInt(4) * 1000);
 
+            //gameRepository.save(game);
             games.add(game);
 
         }
@@ -139,5 +140,9 @@ public class GameService {
         gameRepository.saveAll(games);
 
 
+    }
+
+    public List<Game> getGameByTeam(String identifier) {
+        return gameRepository.findByHomeOrAway(identifier, identifier);
     }
 }
