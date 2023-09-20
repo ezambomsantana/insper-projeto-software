@@ -2,6 +2,7 @@ package com.insper.partida.equipe;
 
 import com.insper.partida.equipe.dto.SaveTeamDTO;
 import com.insper.partida.equipe.dto.TeamReturnDTO;
+import com.insper.partida.equipe.exception.TeamAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class  TeamService {
     }
 
     public TeamReturnDTO saveTeam(SaveTeamDTO saveTeam) {
+
+        if (teamRepository.existsByIdentifier(saveTeam.getIdentifier())) {
+            throw new TeamAlreadyExistsException();
+        }
         Team team = new Team();
         team.setName(saveTeam.getName());
         team.setIdentifier(saveTeam.getIdentifier());
