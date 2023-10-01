@@ -50,8 +50,10 @@ public class GameService {
         Team teamV = teamService.getTeam(saveGameDTO.getAway());
 
         if (teamM == null || teamV == null) {
-            return null;
+            return null; // enviar a mensagem de erro correta
         }
+
+        // validar se o time mandante é diferente do visitante
 
         Game game = new Game();
         game.setIdentifier(UUID.randomUUID().toString());
@@ -71,6 +73,8 @@ public class GameService {
     public GameReturnDTO editGame(String identifier, EditGameDTO editGameDTO) {
         Game gameBD = gameRepository.findByIdentifier(identifier);
 
+        // verificasr se o jogo existe
+
         gameBD.setScoreAway(editGameDTO.getScoreAway());
         gameBD.setScoreHome(editGameDTO.getScoreHome());
         gameBD.setAttendance(editGameDTO.getAttendance());
@@ -85,6 +89,7 @@ public class GameService {
         if (gameBD != null) {
             gameRepository.delete(gameBD);
         }
+        //verificar se o jogo existe
     }
 
     public Integer getScoreTeam(String identifier) {
@@ -94,6 +99,8 @@ public class GameService {
     }
 
     public GameReturnDTO getGame(String identifier) {
+
+        // verificar se o gaame existe
         return GameReturnDTO.covert(gameRepository.findByIdentifier(identifier));
     }
 
