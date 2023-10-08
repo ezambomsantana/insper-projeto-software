@@ -2,6 +2,7 @@ package com.insper.user.user;
 
 import com.insper.user.user.dto.ReturnUserDTO;
 import com.insper.user.user.dto.SaveUserDTO;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
