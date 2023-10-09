@@ -5,6 +5,7 @@ import com.insper.user.user.dto.SaveUserDTO;
 import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +26,22 @@ public class UserService {
 
     public ReturnUserDTO saveUser(SaveUserDTO saveUser) {
         User user = new User();
-        user.setPassword(saveUser.getPassword());
+        String encoded = DigestUtils
+                .md5DigestAsHex(saveUser.getPassword().getBytes()).toUpperCase();
+        user.setPassword(encoded);
         user.setEmail(saveUser.getEmail());
         user.setRoles(saveUser.getRoles());
 
         return ReturnUserDTO.convert(userRepository.save(user));
     }
+
+    public void validateUser(String email, String password) {
+        String encoded = DigestUtils
+                .md5DigestAsHex(password.getBytes()).toUpperCase();
+        boolean exists = userRepository.existsByEmailAndPassword(email, encoded);
+        if (!exists) {
+            throw new RuntimeException("User not found");
+        }
+    }
+
 }
