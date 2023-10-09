@@ -10,14 +10,14 @@ import java.util.List;
 @Setter
 public class ReturnUserDTO {
     private String email;
-    private String passwrod;
+    private String password;
     private List<String> roles;
 
     public static ReturnUserDTO convert(User user) {
         ReturnUserDTO userDTO = new ReturnUserDTO();
         userDTO.setEmail(user.getEmail());
         userDTO.setRoles(user.getRoles());
-        userDTO.setPasswrod(user.getPassword());
+        userDTO.setPassword(user.getPassword());
         return userDTO;
     }
 
