@@ -16,6 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+
     public List<ReturnUserDTO> listUsers() {
         return userRepository
                 .findAll()
@@ -35,13 +36,14 @@ public class UserService {
         return ReturnUserDTO.convert(userRepository.save(user));
     }
 
-    public void validateUser(String email, String password) {
+    public ReturnUserDTO validateUser(String email, String password) {
         String encoded = DigestUtils
                 .md5DigestAsHex(password.getBytes()).toUpperCase();
-        boolean exists = userRepository.existsByEmailAndPassword(email, encoded);
-        if (!exists) {
+        User user = userRepository.findByEmailAndPassword(email, encoded);
+        if (user == null) {
             throw new RuntimeException("User not found");
         }
+        return ReturnUserDTO.convert(user);
     }
 
 }

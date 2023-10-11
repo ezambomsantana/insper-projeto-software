@@ -1,6 +1,8 @@
 package com.insper.user.common;
 
+import com.insper.user.user.LoginService;
 import com.insper.user.user.UserService;
+import com.insper.user.user.dto.ReturnUserDTO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import java.util.List;
 public class LoginFilter implements Filter {
 
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
 
     List<String> openRoutes = Arrays.asList("/user");
 
@@ -28,18 +30,22 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        String email = req.getHeader("email");
-        String password = req.getHeader("password");
+        String token = req.getHeader("token");
 
         String uri = req.getRequestURI();
         String method = req.getMethod();
 
         if (method.equals("GET") && openRoutes.contains(uri)) {
             chain.doFilter(request, response);
-        } else {
-            userService.validateUser(email, password);
-
+        } else if (method.equals("POST") && uri.equals("/login")) {
             chain.doFilter(request, response);
+        } else {
+            ReturnUserDTO user = loginService.get(token);
+            if (user != null) {
+                chain.doFilter(request, response);
+            } else {
+                throw new RuntimeException("User not found");
+            }
         }
 
     }
