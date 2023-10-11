@@ -35,4 +35,6 @@ public class LoginController {
         return tokenDTO;
     }
 
+    // GetMapping("/token/{token}")
+
 }
