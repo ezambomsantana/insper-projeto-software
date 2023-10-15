@@ -1,7 +1,6 @@
 package com.insper.user.common;
 
 import com.insper.user.user.LoginService;
-import com.insper.user.user.UserService;
 import com.insper.user.user.dto.ReturnUserDTO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,10 +11,15 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Component
-@Order(1)
-public class LoginFilter implements Filter {
+@Order(2)
+public class AuthorizationFilter implements Filter {
+
+    Map<String, List<String>> postAuth = Map.of(
+            "/user", Arrays.asList("ADMIN")
+    );
 
     @Autowired
     private LoginService loginService;
@@ -30,24 +34,28 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        String token = req.getHeader("token");
-
         String uri = req.getRequestURI();
         String method = req.getMethod();
+        String token = req.getHeader("token");
 
-        if (method.equals("GET") && openRoutes.contains(uri)) {
-            chain.doFilter(request, response);
-        } else if (method.equals("POST") && uri.equals("/login")) {
-            chain.doFilter(request, response);
-        } else {
+        if (method.equals("POST") && postAuth.containsKey(uri)) {
+            List<String> roles = postAuth.get(uri);
+
             ReturnUserDTO user = loginService.get(token);
-            if (user != null) {
+
+            boolean found = false;
+            for (String role : user.getRoles()) {
+                if (roles.contains(role)) {
+                    found = true;
+                }
+            }
+            if (found) {
                 chain.doFilter(request, response);
             } else {
-                throw new RuntimeException("User not found");
+                throw new RuntimeException();
             }
         }
-
+        chain.doFilter(request, response);
     }
 
 }
