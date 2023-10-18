@@ -19,11 +19,6 @@ public class MongoUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserMongo userMongo = userRepository.findByEmail(username);
 
-        //String [] roles = new String[userMongo.getRoles().size()];
-        //for (int i = 0 ; i < userMongo.getRoles().size(); i++) {
-         //   roles[i] = userMongo.getRoles().get(i);
-        //}
-
         return User.builder()
                 .username(userMongo.getEmail())
                 .password(userMongo.getPassword())

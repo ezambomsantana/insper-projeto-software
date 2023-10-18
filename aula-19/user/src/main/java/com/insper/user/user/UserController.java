@@ -31,4 +31,9 @@ public class UserController {
         return userService.saveUser(saveUser);
     }
 
+    // @DeleteMapping  (/userId) -> Desasbilita o usuário - Apenas ADMIN
+    // @GetMapping (/userId) -> Todos
+    // @PutMapping (/userId) -> muda o password -> User só pode mudar o próprio passowrd
+
+
 }

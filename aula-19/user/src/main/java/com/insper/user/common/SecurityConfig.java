@@ -18,24 +18,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    /*
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("p1")
-                .roles("ADMIN")
-                .build();
-
-        UserDetails user2 = User.withDefaultPasswordEncoder()
-                .username("user2")
-                .password("p2")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, user2);
-    }*/
-
     @Autowired
     MongoUserDetailsService mongoUserDetailsService;
 
