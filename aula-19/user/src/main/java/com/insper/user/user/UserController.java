@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -15,7 +16,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     public List<ReturnUserDTO> listUsers() {
         return userService.listUsers();
@@ -26,12 +26,20 @@ public class UserController {
         return "Oi!";
     }
 
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
-    public ReturnUserDTO saveUser(@RequestBody SaveUserDTO saveUser) {
+    public ReturnUserDTO saveUser(Principal principal, @RequestBody SaveUserDTO saveUser) {
+        System.out.println(principal.getName());
         return userService.saveUser(saveUser);
     }
 
     // @DeleteMapping  (/userId) -> Desasbilita o usuário - Apenas ADMIN
+
+
+
+
+
     // @GetMapping (/userId) -> Todos
     // @PutMapping (/userId) -> muda o password -> User só pode mudar o próprio passowrd
 
